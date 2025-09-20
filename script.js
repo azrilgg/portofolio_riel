@@ -81,11 +81,12 @@ if (skillsSection) {
 }
 
 const contactForm = document.querySelector('.contact-form');
+
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const formData = new FormData(this);
+        const formData = new FormData(contactForm);
         const name = formData.get('name');
         const email = formData.get('email');
         const subject = formData.get('subject');
@@ -96,14 +97,30 @@ if (contactForm) {
             return;
         }
 
-        const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+        // ✅ regex email diperbaiki
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
             alert('Format email tidak valid!');
             return;
         }
 
-        alert('Terima kasih! Pesan Anda telah dikirim. Kami akan segera menghubungi Anda.');
-        this.reset();
+        // ✅ kirim ke Formspree
+        fetch("https://formspree.io/f/movnggkz", {
+            method: "POST",
+            body: formData,
+            headers: { "Accept": "application/json" }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Terima kasih! Pesan Anda telah dikirim.');
+                contactForm.reset();
+            } else {
+                alert('Ups, terjadi kesalahan. Coba lagi nanti!');
+            }
+        })
+        .catch(() => {
+            alert('Ups, tidak bisa terhubung ke server.');
+        });
     });
 }
 
@@ -210,4 +227,5 @@ scrollToTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
 
