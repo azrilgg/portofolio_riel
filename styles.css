@@ -198,8 +198,8 @@ header {
 }
 
 .profile-img {
-    width: 350px;
-    height: 350px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     border: 5px solid #64ffda;
     object-fit: cover;
@@ -849,3 +849,4 @@ footer {
 html {
     scroll-behavior: smooth;
 }
+
